@@ -1,0 +1,8 @@
+-- -- Seed sample products for demonstration
+-- INSERT INTO products (title, description, price, image_url) VALUES
+-- ('Pro Starter Kit', 'Everything you need to launch your startup. Includes templates, guides, and support.', 49.99, '/placeholder.svg?height=300&width=400'),
+-- ('Business Analytics Suite', 'Advanced analytics dashboard with real-time insights and reporting tools.', 199.99, '/placeholder.svg?height=300&width=400'),
+-- ('Enterprise Security Pack', 'Complete security solution with encryption, monitoring, and compliance tools.', 299.99, '/placeholder.svg?height=300&width=400'),
+-- ('Team Collaboration Hub', 'All-in-one workspace for teams. Chat, files, tasks, and video meetings.', 79.99, '/placeholder.svg?height=300&width=400'),
+-- ('Marketing Automation Pro', 'Automate your marketing campaigns with AI-powered tools and insights.', 149.99, '/placeholder.svg?height=300&width=400'),
+-- ('Customer Success Platform', 'Manage customer relationships and boost retention with smart tools.', 129.99, '/placeholder.svg?height=300&width=400');

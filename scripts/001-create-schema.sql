@@ -1,0 +1,108 @@
+-- -- Premium SaaS Database Schema
+-- -- Users table (extends Supabase auth.users)
+-- CREATE TABLE users (
+--   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+--   name TEXT,
+--   email TEXT UNIQUE NOT NULL,
+--   avatar_url TEXT,
+--   role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
+
+-- -- Products table
+-- CREATE TABLE products (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   title TEXT NOT NULL,
+--   description TEXT,
+--   price NUMERIC(10, 2) NOT NULL DEFAULT 0,
+--   stripe_price_id TEXT,
+--   image_url TEXT,
+--   created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
+
+-- -- Orders table
+-- CREATE TABLE orders (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+--   product_id UUID REFERENCES products(id) ON DELETE SET NULL,
+--   amount NUMERIC(10, 2) NOT NULL,
+--   stripe_session_id TEXT,
+--   stripe_payment_intent_id TEXT,
+--   invoice_url TEXT,
+--   payment_metadata JSONB,
+--   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'failed')),
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
+
+-- -- Analytics table
+-- CREATE TABLE analytics (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+--   event_name TEXT NOT NULL,
+--   event_value TEXT,
+--   page TEXT,
+--   device TEXT,
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
+
+-- -- Enable Row Level Security
+-- ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE analytics ENABLE ROW LEVEL SECURITY;
+
+-- -- Users policies
+-- CREATE POLICY "Users can view their own profile" ON users FOR SELECT USING (auth.uid() = id);
+-- CREATE POLICY "Users can update their own profile" ON users FOR UPDATE USING (auth.uid() = id);
+-- CREATE POLICY "Admins can view all users" ON users FOR SELECT USING (
+--   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+-- );
+
+-- -- Products policies (public read, admin write)
+-- CREATE POLICY "Anyone can view products" ON products FOR SELECT TO anon, authenticated USING (true);
+-- CREATE POLICY "Admins can insert products" ON products FOR INSERT WITH CHECK (
+--   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+-- );
+-- CREATE POLICY "Admins can update products" ON products FOR UPDATE USING (
+--   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+-- );
+-- CREATE POLICY "Admins can delete products" ON products FOR DELETE USING (
+--   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+-- );
+
+-- -- Orders policies
+-- CREATE POLICY "Users can view their own orders" ON orders FOR SELECT USING (auth.uid() = user_id);
+-- CREATE POLICY "Users can insert their own orders" ON orders FOR INSERT WITH CHECK (auth.uid() = user_id);
+-- CREATE POLICY "Admins can view all orders" ON orders FOR SELECT USING (
+--   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+-- );
+-- CREATE POLICY "Admins can update orders" ON orders FOR UPDATE USING (
+--   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+-- );
+
+-- -- Analytics policies
+-- CREATE POLICY "Users can insert analytics" ON analytics FOR INSERT WITH CHECK (true);
+-- CREATE POLICY "Admins can view all analytics" ON analytics FOR SELECT USING (
+--   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+-- );
+
+-- -- Create function to auto-create user profile on signup
+-- CREATE OR REPLACE FUNCTION public.handle_new_user()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--   INSERT INTO public.users (id, email, name, avatar_url)
+--   VALUES (
+--     NEW.id,
+--     NEW.email,
+--     COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
+--     NEW.raw_user_meta_data->>'avatar_url'
+--   );
+--   RETURN NEW;
+-- END;
+-- $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- -- Trigger to auto-create user profile
+-- CREATE OR REPLACE TRIGGER on_auth_user_created
+--   AFTER INSERT ON auth.users
+--   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
