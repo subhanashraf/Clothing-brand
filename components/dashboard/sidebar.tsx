@@ -1,44 +1,51 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import type { User } from "@/lib/types"
-import { LayoutDashboard, Package, ShoppingCart, BarChart3, Settings, LogOut, ChevronLeft, Menu } from "lucide-react"
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  Menu
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { useRouter } from "next/navigation"
 
 interface DashboardSidebarProps {
   user: User | null
 }
 
+// ⭐ Add role-based permissions here
 const navItems = [
   {
     title: "Overview",
     href: "/dashboard",
     icon: LayoutDashboard,
+    roles: ["admin"], // only admin
   },
   {
     title: "Products",
     href: "/dashboard/products",
     icon: Package,
+    roles: ["admin"], // only admin
   },
   {
     title: "Orders",
     href: "/dashboard/orders",
     icon: ShoppingCart,
-  },
-  {
-    title: "Analytics",
-    href: "/dashboard/analytics",
-    icon: BarChart3,
+    roles: ["admin", "user"], // both admin + user
   },
   {
     title: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
+    roles: ["admin","user"], // only admin
   },
 ]
 
@@ -47,6 +54,13 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
   const router = useRouter()
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+
+ 
+
+  // ⭐ Filter menu items by user role
+  const allowedNavItems = navItems.filter((item) =>
+    item.roles.includes(user?.role || "user")
+  )
 
   const handleSignOut = async () => {
     const supabase = createClient()
@@ -104,8 +118,13 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href))
+
+            {/* ⭐ Use allowedNavItems instead of navItems */}
+            {allowedNavItems.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/dashboard" && pathname.startsWith(item.href))
+
               return (
                 <Link
                   key={item.href}
@@ -130,16 +149,17 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
             <div className={cn("flex items-center gap-3 mb-3", isCollapsed && "justify-center")}>
               <div className="h-9 w-9 rounded-full bg-sidebar-accent flex items-center justify-center shrink-0">
                 <span className="text-sm font-medium text-sidebar-accent-foreground">
-                  {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
+                  {user?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
                 </span>
               </div>
               {!isCollapsed && (
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-sidebar-foreground truncate">{user?.name || "User"}</p>
+                  <p className="text-sm font-medium text-sidebar-foreground truncate">{user?.full_name || "User"}</p>
                   <p className="text-xs text-sidebar-foreground/60 truncate">{user?.email}</p>
                 </div>
               )}
             </div>
+
             <Button
               variant="ghost"
               size="sm"

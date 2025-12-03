@@ -18,6 +18,8 @@ import { Loader2, Plus } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { Switch } from "../ui/switch"
+import { is } from "date-fns/locale"
 
 interface Category {
   id: string
@@ -27,11 +29,15 @@ interface Category {
 export function CreateCategoriesDialog() {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+   
   const [categories, setCategories] = useState<Category[]>([])
 
   const [form, setForm] = useState({
     name: "",
     slug: "",
+    image_url: "",
+    is_active:true,
+    is_featured:false,
       parent_ids: [] as string[],
   })
 
@@ -73,8 +79,10 @@ export function CreateCategoriesDialog() {
 
       const { error } = await supabase.from("categories").insert({
         name: form.name,
-  
+    image_url: form.image_url,    
         slug: form.slug,
+        is_active: form.is_active,
+        is_featured: form.is_featured,
    
       parent_ids: form.parent_ids.length > 0 ? form.parent_ids : null
       })
@@ -95,9 +103,10 @@ export function CreateCategoriesDialog() {
   const resetForm = () => {
     setForm({
       name: "",
-     
+       image_url: "",    
       slug: "",
-    
+    is_active:true,
+    is_featured:false,
       parent_ids: [],
     })
   }
@@ -167,7 +176,30 @@ export function CreateCategoriesDialog() {
     className="basic-multi-select"
   />
 </div>
+<Label>Image URL</Label>
+<Input
+  value={form.image_url}
+  onChange={(e) => update("image_url", e.target.value)}
 
+  placeholder="https://example.com/image.jpg"
+/>
+  <div className="flex items-center justify-between">
+                <Label htmlFor="is_active" className="cursor-pointer">Product Active</Label>
+                <Switch
+                  id="is_active"
+                  checked={form.is_active}
+                  onCheckedChange={(checked) => update("is_active", checked)}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="is_featured" className="cursor-pointer">Featured Product</Label>
+                <Switch
+                  id="is_featured"
+                  checked={form.is_featured}
+                  onCheckedChange={(checked) => update("is_featured", checked)}
+                />
+              </div>
            
           </div>
 

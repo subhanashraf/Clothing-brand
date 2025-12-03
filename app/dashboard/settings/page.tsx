@@ -8,7 +8,21 @@ export default async function SettingsPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { data: profile } = await supabase.from("users").select("*").eq("id", user?.id).single()
+  // Fetch user profile from your 'users' table (not 'profiles')
+  const { data: userProfile } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", user?.id)
+    .single()
+
+  // Create a user object that matches the User type expected by SettingsForm
+  const userData = userProfile || {
+    id: user?.id || "",
+    email: user?.email || "",
+    name: user?.user_metadata?.name || "",
+  }
+
+  
 
   return (
     <div className="space-y-8">
@@ -17,7 +31,7 @@ export default async function SettingsPage() {
         <p className="text-muted-foreground">Manage your account settings</p>
       </div>
 
-      <SettingsForm user={profile} />
+      <SettingsForm user={userData} />
     </div>
   )
 }

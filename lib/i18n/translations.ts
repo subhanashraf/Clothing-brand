@@ -12,8 +12,20 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.signup": "Sign Up",
     "nav.dashboard": "Dashboard",
     "nav.logout": "Logout",
+// fqa title
+     "FQA.title": "Frequently Asked Questions",
+  "FQA.q1": "What products do you export?",
+  "FQA.a1": "We export premium-quality clothing including jackets, hoodies, shirts, and more.",
+  "FQA.q2": "Do you offer worldwide shipping?",
+  "FQA.a2": "Yes, we ship worldwide with fast and reliable delivery partners.",
+  "FQA.q3": "Can I place a bulk order?",
+  "FQA.a3": "Yes, we accept bulk and wholesale orders with discounted pricing.",
+  "FQA.q4": "How can I track my order?",
+  "FQA.a4": "Once your order is shipped, we will provide you with a tracking number via email.",
+
 
     // Hero
+
     "hero.title": "Premium Clothing Export",
     "hero.subtitle": "Quality garments crafted for global markets. Experience excellence in every stitch.",
     "hero.cta": "Shop Collection",
@@ -94,6 +106,16 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.dashboard": "لوحة التحكم",
     "nav.logout": "تسجيل الخروج",
 
+    // fqa 
+     "FQA.title": "اکثر پوچھے جانے والے سوالات",
+  "FQA.q1": "آپ کون سے پراڈکٹس ایکسپورٹ کرتے ہیں؟",
+  "FQA.a1": "ہم اعلیٰ معیار کے ملبوسات ایکسپورٹ کرتے ہیں جیسے جیکٹ، ہُڈیز، شرٹس وغیرہ۔",
+  "FQA.q2": "کیا آپ دنیا بھر میں شپنگ فراہم کرتے ہیں؟",
+  "FQA.a2": "جی ہاں، ہم دنیا بھر میں تیز اور قابل اعتماد شپنگ فراہم کرتے ہیں۔",
+  "FQA.q3": "کیا میں بلک آرڈر دے سکتا ہوں؟",
+  "FQA.a3": "جی ہاں، ہم بلک اور ہول سیل آرڈرز قبول کرتے ہیں اور خصوصی رعایتی قیمتیں دیتے ہیں۔",
+  "FQA.q4": "میں اپنے آرڈر کو کیسے ٹریک کر سکتا ہوں؟",
+  "FQA.a4": "جب آپ کا آرڈر شپ ہو جائے گا، ہم آپ کو ای میل کے ذریعے ٹریکنگ نمبر فراہم کریں گے۔",
     // Hero
     "hero.title": "تصدير الملابس الفاخرة",
     "hero.subtitle": "ملابس عالية الجودة مصممة للأسواق العالمية. تجربة التميز في كل غرزة.",
@@ -175,6 +197,16 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.dashboard": "仪表板",
     "nav.logout": "退出",
 
+    // fqa
+     "FQA.title": "常见问题解答",
+  "FQA.q1": "你们出口哪些产品？",
+  "FQA.a1": "我们出口高品质服装，包括夹克、连帽衫、衬衫等。",
+  "FQA.q2": "你们是否提供全球运输？",
+  "FQA.a2": "是的，我们提供全球快速且可靠的运输服务。",
+  "FQA.q3": "我可以下批量订单吗？",
+  "FQA.a3": "可以，我们接受批发订单并提供优惠价格。",
+  "FQA.q4": "我如何跟踪我的订单？",
+  "FQA.a4": "一旦您的订单发货，我们会通过电子邮件向您提供跟踪号码。", 
     // Hero
     "hero.title": "优质服装出口",
     "hero.subtitle": "为全球市场精心打造的优质服装。体验每一针每一线的卓越。",
@@ -255,6 +287,19 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.signup": "سائن اپ",
     "nav.dashboard": "ڈیش بورڈ",
     "nav.logout": "لاگ آؤٹ",
+
+    //fqa
+ 
+  "FQA.title": "الأسئلة الشائعة",
+  "FQA.q1": "ما هي المنتجات التي تقومون بتصديرها؟",
+  "FQA.a1": "نقوم بتصدير الملابس عالية الجودة مثل الجاكيتات، الهودي، القمصان وغيرها.",
+  "FQA.q2": "هل تقدمون الشحن إلى جميع أنحاء العالم؟",
+  "FQA.a2": "نعم، نوفر شحنًا سريعًا وموثوقًا إلى جميع دول العالم.",
+  "FQA.q3": "هل يمكنني تقديم طلب شراء بالجملة؟",
+  "FQA.a3": "نعم، نقبل طلبات الشراء بالجملة ونوفر أسعارًا خاصة.",
+  "FQA.q4": "كيف يمكنني تتبع طلبي؟",
+  "FQA.a4": "بمجرد شحن طلبك، سنزودك برقم تتبع عبر البريد الإلكتروني.",
+
 
     // Hero
     "hero.title": "پریمیم کپڑوں کی برآمد",
@@ -337,6 +382,14 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.dashboard": "Panel",
     "nav.logout": "Cerrar Sesión",
 
+    //fqa
+     "FQA.title": "Preguntas Frecuentes",
+  "FQA.q1": "¿Qué productos exportan?",
+  "FQA.a1": "Exportamos ropa de alta calidad como chaquetas, sudaderas y camisas.",
+  "FQA.q2": "¿Ofrecen envíos a todo el mundo?",
+  "FQA.a2": "Sí, realizamos envíos internacionales con socios rápidos y confiables.",
+  "FQA.q3": "¿Puedo hacer un pedido al por mayor?",
+  "FQA.a3": "Sí, aceptamos pedidos al por mayor y ofrecemos precios con descuento.",
     // Hero
     "hero.title": "Exportación de Ropa Premium",
     "hero.subtitle": "Prendas de calidad diseñadas para mercados globales. Experiencia de excelencia en cada puntada.",

@@ -13,14 +13,16 @@ export default async function DashboardLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  console.log(user);
+ 
   
   if (!user) {
     redirect("/auth/sign-up-success")
   }
 
+
   // Get user profile
-  const { data: profile } = await supabase.from("users").select("*").eq("id", user.id).single()
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+
 
   return (
     <div className="min-h-screen bg-background">

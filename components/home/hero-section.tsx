@@ -1,150 +1,206 @@
 "use client"
 
+import { useState, useEffect, useMemo, useCallback } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { ArrowRight, Sparkles } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useI18n } from "@/lib/i18n/context"
 import { t } from "@/lib/i18n/translations"
+import Link from "next/link"
 
-export function HeroSection() {
+export default function HeroSection() {
   const { locale, dir } = useI18n()
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
+
+  // Optimized banners - converted to WebP format
+  const banners = useMemo(
+    () => [
+      {
+        id: 1,
+        title: t("hero.title", locale),
+        subtitle: t("hero.subtitle", locale),
+        image: "/photo-1441984904996-e0b6ba687e04.jpg", // WebP format
+        cta: t("shop", locale),
+        href: "/shop",
+      },
+      {
+        id: 2,
+        title: t("hero.title", locale),
+        subtitle: t("hero.subtitle", locale),
+        image: "/photo-1441986300917-64674bd600d8.jpg", // WebP format
+        cta: t("shop", locale),
+        href: "/shop",
+      },
+      {
+        id: 3,
+        title: t("hero.title", locale),
+        subtitle: t("hero.subtitle", locale),
+        image: "/photo-1571019613454-1cb2f99b2d8b.jpj.jpg", // WebP format - FIXED extension
+        cta: t("shop", locale),
+        href: "/shop",
+      },
+    ],
+    [locale]
+  )
+
+  // Preload first image for LCP
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const preloadLink = document.createElement('link')
+      preloadLink.rel = 'preload'
+      preloadLink.as = 'image'
+      preloadLink.href = banners[0].image
+      preloadLink.fetchPriority = 'high'
+      document.head.appendChild(preloadLink)
+
+      // Mark section as visible for animations
+      setIsVisible(true)
+
+      return () => {
+        document.head.removeChild(preloadLink)
+      }
+    }
+  }, [banners])
+
+  // Optimized auto-slide effect with cleanup
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    
+    const startTimer = () => {
+      timer = setInterval(() => {
+        setCurrentSlide((prev) => {
+          const next = (prev + 1) % banners.length
+          // Preload next image
+          if (typeof document !== 'undefined') {
+            const img = document.createElement('img')
+            img.src = banners[next].image
+          }
+          return next
+        })
+      }, 7000) // Increased to 7s for better LCP
+    }
+
+    startTimer()
+
+    // Pause on hover for better UX
+    const section = document.querySelector('.hero-section')
+    const handleMouseEnter = () => clearInterval(timer)
+    const handleMouseLeave = () => startTimer()
+
+    section?.addEventListener('mouseenter', handleMouseEnter)
+    section?.addEventListener('mouseleave', handleMouseLeave)
+
+    return () => {
+      clearInterval(timer)
+      section?.removeEventListener('mouseenter', handleMouseEnter)
+      section?.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [banners])
+
+  // Optimized slide handlers with requestAnimationFrame
+  const nextSlide = useCallback(() => {
+    requestAnimationFrame(() => {
+      setCurrentSlide((prev) => (prev + 1) % banners.length)
+    })
+  }, [banners.length])
+
+  const prevSlide = useCallback(() => {
+    requestAnimationFrame(() => {
+      setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length)
+    })
+  }, [banners.length])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-bg" dir={dir}>
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "linear",
-          }}
-          className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [90, 0, 90],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "linear",
-          }}
-          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-chart-2/10 to-transparent rounded-full blur-3xl"
-        />
-      </div>
+    <section 
+      className="hero-section relative h-[600px] md:h-[650px] overflow-hidden" 
+      dir={dir}
+      aria-label="Hero carousel"
+    >
+      {banners.map((banner, index) => (
+        <div
+          key={banner.id}
+          className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+            index === currentSlide
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 translate-x-full"
+          }`}
+          aria-hidden={index !== currentSlide}
+        >
+          <Image
+            src={banner.image}
+            alt={banner.title}
+            fill
+            className="object-cover"
+            priority={index === 0} // Only first image gets high priority
+            loading={index === 0 ? "eager" : "lazy"}
+            sizes="100vw"
+            quality={index === 0 ? 90 : 85} // Higher quality for first image
+            placeholder="blur"
+            blurDataURL="data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA="
+          />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-32">
-        <div className="text-center">
-          {/* Badge */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-sm font-medium text-foreground mb-8">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span>Premium Export Quality</span>
-            </div>
-          </motion.div>
+          {/* Gradient overlay for better text readability */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"
+            aria-hidden="true"
+          />
 
-          {/* Main heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground text-balance"
-          >
-            {t("hero.title", locale)}
-          </motion.h1>
-
-          {/* Subheading */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty"
-          >
-            {t("hero.subtitle", locale)}
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Link href="/products">
-              <Button size="lg" className="rounded-full px-8 gap-2 group">
-                {t("hero.cta", locale)}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:rotate-180" />
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button variant="outline" size="lg" className="rounded-full px-8 glass bg-transparent">
-                {t("hero.secondary", locale)}
-              </Button>
-            </Link>
-          </motion.div>
-
-          {/* Hero image grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto"
-          >
-            {[
-              { query: "premium cotton shirts fashion", alt: "Premium Shirts" },
-              { query: "luxury denim jeans clothing", alt: "Luxury Denim" },
-              { query: "elegant dress fashion export", alt: "Elegant Dresses" },
-              { query: "premium jacket outerwear clothing", alt: "Premium Jackets" },
-            ].map((item, index) => (
-              <motion.div
-                key={item.alt}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="glass rounded-2xl p-1 shadow-xl overflow-hidden group"
+          {/* Content */}
+          <div className="absolute inset-0 flex items-center">
+            <div className="container mx-auto px-4 md:px-8 lg:px-20">
+              <div 
+                className={`max-w-2xl text-white space-y-4 md:space-y-6 transition-all duration-700 ${
+                  isVisible && index === currentSlide 
+                    ? "opacity-100 translate-y-0" 
+                    : "opacity-0 translate-y-4"
+                }`}
               >
-                <div className="rounded-xl overflow-hidden aspect-[3/4] bg-muted">
-                  <img
-                    src={`/.jpg?height=400&width=300&query=${encodeURIComponent(item.query)}`}
-                    alt={item.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                  {banner.title}
+                </h1>
+                <p className="text-lg md:text-xl lg:text-2xl text-gray-200">
+                  {banner.subtitle}
+                </p>
+                <div className="pt-2">
+                  <Link href={banner.href} prefetch={false}>
+                    <Button
+                      size="lg"
+                      className="bg-primary hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                      aria-label={`${banner.cta} - ${banner.title}`}
+                    >
+                      {banner.cta}
+                    </Button>
+                  </Link>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="mt-16 flex flex-wrap items-center justify-center gap-8 text-muted-foreground"
-          >
-            <div className="flex items-center gap-2">
-              <span className="text-3xl font-bold text-foreground">50+</span>
-              <span className="text-sm">Countries</span>
+              </div>
             </div>
-            <div className="h-8 w-px bg-border" />
-            <div className="flex items-center gap-2">
-              <span className="text-3xl font-bold text-foreground">10K+</span>
-              <span className="text-sm">Products</span>
-            </div>
-            <div className="h-8 w-px bg-border" />
-            <div className="flex items-center gap-2">
-              <span className="text-3xl font-bold text-foreground">5K+</span>
-              <span className="text-sm">Happy Clients</span>
-            </div>
-          </motion.div>
+          </div>
         </div>
-      </div>
+      ))}
+
+      {/* Navigation Arrows */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 hover:scale-110 transition-all focus:ring-2 focus:ring-white focus:ring-offset-2"
+        onClick={prevSlide}
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 hover:scale-110 transition-all focus:ring-2 focus:ring-white focus:ring-offset-2"
+        onClick={nextSlide}
+        aria-label="Next slide"
+      >
+        <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+      </Button>
+
+    
     </section>
   )
 }

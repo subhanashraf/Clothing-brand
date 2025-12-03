@@ -136,6 +136,41 @@
   }
 }
 
+/* Light Soft Glass */
+.glass-soft {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+}
+
+/* Dark Soft Glass */
+.glass-dark {
+  background: rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+}
+
+/* Ultra Premium Glass (Apple Style) */
+.glass-ultra {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(22px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 25px rgb(0 0 0 / 0.2);
+  border-radius: 22px;
+}
+
+/* Neon Glow Glass (For AI website, best effect) */
+.glass-neon {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(140, 80, 255, 0.4);
+  box-shadow: 0 0 15px rgba(120, 0, 255, 0.45), inset 0 0 8px rgba(120, 0, 255, 0.35);
+}
+
+
 /* Added glassmorphism utility class */
 .glass {
   background-color: var(--glass);
@@ -150,7 +185,57 @@
 }
 
 .dark .gradient-bg {
-  background: linear-gradient(135deg, oklch(0.15 0.03 260) 0%, oklch(0.13 0.02 200) 50%, oklch(0.15 0.02 280) 100%);
+  background: linear-gradient(
+    135deg,
+    oklch(0.24 0.04 260),
+    oklch(0.20 0.03 250),
+    oklch(0.22 0.04 280)
+  );
+}
+
+
+
+/* Premium Gradient Button */
+.btn-gradient {
+  background: linear-gradient(135deg, oklch(0.55 0.18 260), oklch(0.62 0.16 280));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn-gradient:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* Glass Button */
+.btn-glass {
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  transition: 0.3s ease;
+}
+.section-bg {
+  background: radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 50%
+    );
+  backdrop-filter: blur(20px);
+}
+
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.16);
 }
 
 /* Added animated gradient for hero text */
@@ -174,4 +259,44 @@
   );
   background-size: 300% 300%;
   animation: gradient-shift 8s ease infinite;
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.priority-1 {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.priority-2 {
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.priority-3 {
+  animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.priority-4 {
+  animation: fadeInUp 0.6s ease-out 0.9s both;
+}
+
+.priority-5 {
+  animation: fadeInUp 0.6s ease-out 1.2s both;
+}
+
+/* Initial state for delayed items */
+.priority-2,
+.priority-3,
+.priority-4,
+.priority-5 {
+  opacity: 0;
 }

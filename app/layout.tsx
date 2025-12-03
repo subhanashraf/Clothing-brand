@@ -1,4 +1,4 @@
-import type React from "react"
+import  React, { Suspense } from "react"
 import type { Metadata, Viewport } from "next"
 import { Inter, Noto_Sans_Arabic, Noto_Sans_SC } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/theme-provider"
 import { I18nProvider } from "@/lib/i18n/context"
 import { CartProvider } from "@/lib/cart/context"
+import { PageLoader } from "@/components/PageLoader"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const notoArabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-arabic" })
@@ -60,7 +61,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <I18nProvider>
             <CartProvider>
-              {children}
+               <Suspense fallback={<PageLoader />}>
+                {children}
+              </Suspense>
               <Toaster position="top-right" richColors />
             </CartProvider>
           </I18nProvider>

@@ -11,18 +11,17 @@ interface CategoriesSectionProps {
   categories: Category[]
 }
 
-const defaultCategories = [
-  { name: "Men's Wear", slug: "mens-wear", image: "mens formal casual clothing collection" },
-  { name: "Women's Wear", slug: "womens-wear", image: "womens elegant fashion collection" },
-  { name: "Children's Wear", slug: "childrens-wear", image: "kids colorful clothing collection" },
-  { name: "Accessories", slug: "accessories", image: "fashion accessories scarves belts" },
-]
+
 
 export function CategoriesSection({ categories }: CategoriesSectionProps) {
   const { locale, dir } = useI18n()
+ 
+  
+const displayCategories = categories.filter(
+  (cat) => cat.is_active === true && cat.is_featured === true
+);
 
-  const displayCategories =
-    categories.length > 0 ? categories.slice(0, 4) : defaultCategories.map((c, i) => ({ ...c, id: String(i) }))
+   
 
   return (
     <section className="py-24 sm:py-32 bg-background" dir={dir}>
@@ -46,20 +45,20 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Link href={`/products?category=${category.slug}`}>
+              <Link href={`/products`}>
                 <div className="group relative aspect-[3/4] rounded-2xl overflow-hidden glass">
-                  {/* <img
+                  <img
                     src={
                       (category as Category).image_url ||
-                      `/placeholder.svg?height=500&width=400&query=${encodeURIComponent((category as { image?: string  || "/placeholder.svg"}).image || category.name)}`
+                      `/placeholder.svg?height=500&width=400&query=${encodeURIComponent( category.name)}`
                     }
-                    alt={getLocalizedField(category as Category, "name", locale) || category.name}
+                    alt={`${category.name}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  /> */}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                     <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2">
-                      {getLocalizedField(category as Category, "name", locale) || category.name}
+                      {category.name}
                     </h3>
                     <span className="inline-flex items-center gap-1 text-sm text-primary font-medium group-hover:gap-2 transition-all">
                       Shop Now

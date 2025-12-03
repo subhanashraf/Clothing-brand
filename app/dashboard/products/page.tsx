@@ -38,8 +38,11 @@ export default async function ProductsPage() {
           <h2 className="text-2xl font-bold text-foreground">Products</h2>
           <p className="text-muted-foreground">Manage your product catalog</p>
         </div>
-        <CreateProductDialog />
+        <div className="flex gap-2">
+    <CreateProductDialog />
         <CreateCategoriesDialog />
+        </div>
+        
       </div>
 
       <ProductsTable products={productsWithCategoryName || []} categories={categories || []}  />

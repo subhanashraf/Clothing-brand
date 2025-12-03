@@ -5,21 +5,20 @@ export interface User {
   avatar_url: string | null
   role: "user" | "admin"
   created_at: string
+  name: string | null
 }
 
 export interface Category {
   id: string
   name: string
-  name_en: string | null
-  name_ar: string | null
-  name_cn: string | null
-  name_ur: string | null
-  name_es: string | null
+
   slug: string
   image_url: string | null
   category_id: [] | null,
   parent_ids: string[] | null,
   created_at: string
+  is_active: boolean
+  is_featured: boolean
 }
 
 export interface Product {
@@ -51,7 +50,20 @@ export interface Product {
   created_at: string
   updated_at: string
   category?: Category
+  stripe_product_id: string | null
   category_name:string | null
+  moq:number | string | null
+  
+  carton_weight:string | null
+  carton_dimensions:string | null
+  dimension_unit:string | null
+  seo_title:string | null
+  seo_description:string | null
+  wholesale_price:number | null
+  wholesale_currency:string | null
+  origin_country:string | null
+  brand:string | null
+  carton_qty:number | string | null
 }
 
 export interface Order {
