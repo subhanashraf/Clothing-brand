@@ -113,7 +113,7 @@ export function Navbar() {
       <div className="h-9 w-20 bg-muted rounded-xl animate-pulse"></div>
     </div>
   )
-
+  const textColor = isScrolled && theme === "light" ? "text-black" : "text-white";
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -130,7 +130,7 @@ export function Navbar() {
             <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary to-chart-2 flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">C</span>
             </div>
-            <span className="font-semibold text-foreground text-xl tracking-tight">ClothEx</span>
+            <span className={`font-semibold ${textColor} text-xl tracking-tight`}>ClothEx</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -139,7 +139,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-foreground hover:text-muted-foreground transition-colors"
+                className= {`text-sm font-medium ${textColor}  hover:text-muted-foreground transition-colors`}
                 prefetch={false}
               >
                 {link.label}

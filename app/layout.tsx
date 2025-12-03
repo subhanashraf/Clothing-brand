@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { I18nProvider } from "@/lib/i18n/context"
 import { CartProvider } from "@/lib/cart/context"
 import { PageLoader } from "@/components/PageLoader"
+import { ChatBot } from "@/components/chartbot/chartBotAI"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const notoArabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-arabic" })
@@ -63,6 +64,7 @@ export default function RootLayout({
             <CartProvider>
                <Suspense fallback={<PageLoader />}>
                 {children}
+                <ChatBot />
               </Suspense>
               <Toaster position="top-right" richColors />
             </CartProvider>

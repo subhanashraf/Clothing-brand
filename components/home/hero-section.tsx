@@ -113,7 +113,7 @@ export default function HeroSection() {
 
   return (
     <section 
-      className="hero-section relative h-[600px] md:h-[650px] overflow-hidden" 
+      className="hero-section relative h-[600px] md:h-[750px] overflow-hidden" 
       dir={dir}
       aria-label="Hero carousel"
     >
