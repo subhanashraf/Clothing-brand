@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useI18n } from "@/lib/i18n/context"
 import { t } from "@/lib/i18n/translations"
 import Link from "next/link"
-
+import { Eye } from "lucide-react"
 export default function HeroSection() {
   const { locale, dir } = useI18n()
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -22,7 +22,7 @@ export default function HeroSection() {
         subtitle: t("hero.subtitle", locale),
         image: "/photo-1441984904996-e0b6ba687e04.jpg", // WebP format
         cta: t("shop", locale),
-        href: "/shop",
+        href: "/products",
       },
       {
         id: 2,
@@ -30,7 +30,7 @@ export default function HeroSection() {
         subtitle: t("hero.subtitle", locale),
         image: "/photo-1441986300917-64674bd600d8.jpg", // WebP format
         cta: t("shop", locale),
-        href: "/shop",
+        href: "/products",
       },
       {
         id: 3,
@@ -38,7 +38,7 @@ export default function HeroSection() {
         subtitle: t("hero.subtitle", locale),
         image: "/photo-1571019613454-1cb2f99b2d8b.jpj.jpg", // WebP format - FIXED extension
         cta: t("shop", locale),
-        href: "/shop",
+        href: "/products",
       },
     ],
     [locale]
@@ -164,13 +164,15 @@ export default function HeroSection() {
                 </p>
                 <div className="pt-2">
                   <Link href={banner.href} prefetch={false}>
-                    <Button
-                      size="lg"
-                      className="bg-primary hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                      aria-label={`${banner.cta} - ${banner.title}`}
-                    >
-                      {banner.cta}
-                    </Button>
+                
+              <Button 
+                size="lg" 
+                className="rounded-full px-8 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+              >
+                <Eye className="mr-2 h-4 w-4" />
+                View All Products
+              </Button>
+          
                   </Link>
                 </div>
               </div>
