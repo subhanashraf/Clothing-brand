@@ -520,7 +520,7 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
               </Badge>
             )}
           </h2>
-          <p className="text-gray-600">
+          <p className="text-foreground">
             {role === "admin" 
               ? `Total orders: ${orders.length}` 
               : `Your orders: ${userOrders.length}`
@@ -571,20 +571,13 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
       <Card className="border-0 shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader className="bg-gray-50">
+            <TableHeader >
               <TableRow>
                 {/* Order & Customer */}
                 <TableHead className="w-[280px]">
                   <div className="flex items-center gap-2">
                     <span>Order & Customer</span>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="h-6 w-6 p-0"
-                      onClick={() => toggleSort("name")}
-                    >
-                      <ArrowUpDown className="h-3 w-3" />
-                    </Button>
+              
                   </div>
                 </TableHead>
 
@@ -642,9 +635,9 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                 <TableRow>
                   <TableCell colSpan={role === "admin" ? 9 : 7} className="h-32 text-center">
                     <div className="flex flex-col items-center justify-center">
-                      <Package className="h-12 w-12 text-gray-300 mb-3" />
-                      <p className="text-gray-500 font-medium">No orders found</p>
-                      <p className="text-gray-400 text-sm">
+                      <Package className="h-12 w-12 text-foreground mb-3" />
+                      <p className="text-muted-foreground font-medium">No orders found</p>
+                      <p className="text-muted-foreground text-sm">
                         {search ? "Try different search terms" : "No orders to display"}
                       </p>
                     </div>
@@ -652,26 +645,26 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                 </TableRow>
               ) : (
                 filteredOrders.map((order) => (
-                  <TableRow key={order.id} className="hover:bg-gray-50">
+                  <TableRow key={order.id} className="hover:gradient-bg">
                     {/* Order ID & Customer */}
                     <TableCell>
                       <div className="space-y-2">
                         <div>
-                          <p className="font-semibold text-gray-900 truncate">
+                          <p className="font-semibold text-foreground truncate">
                             {role === "admin" ? `Order #${order.id.slice(0, 8).toUpperCase()}` : `Order #${order.id.slice(0, 8).toUpperCase()}`}
                           </p>
                           {role === "admin" && (
-                            <p className="text-xs text-gray-500 font-mono">
+                            <p className="text-xs text-foregroundfont-mono">
                               ID: {order.id}
                             </p>
                           )}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className="flex items-center gap-2 text-sm text-foreground">
                           <User className="h-3 w-3" />
                           <span className="truncate">{order.customer_name || "Guest"}</span>
                         </div>
                         {role === "admin" && (
-                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <div className="flex items-center gap-2 text-sm text-foreground">
                             <Mail className="h-3 w-3" />
                             <span className="truncate">{order.customer_email}</span>
                           </div>
@@ -683,8 +676,8 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                     <TableCell>
                       <div className="flex flex-wrap gap-2">
                         {order.items?.slice(0, role === "admin" ? 3 : 2).map((item, idx) => (
-                          <div key={idx} className="flex items-center gap-2 bg-gray-50 rounded-lg p-2">
-                            <div className="w-8 h-8 rounded overflow-hidden bg-gray-100 flex-shrink-0">
+                          <div key={idx} className="flex items-center gap-2 gradient-bg  rounded-lg p-2">
+                            <div className="w-8 h-8 rounded overflow-hidden gradient-bg flex-shrink-0">
                               {item?.image ? (
                                 <Image
                                   src={item.image}
@@ -726,7 +719,7 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                     <TableCell>
                       <div className="space-y-1">
                         {getStatusBadge(order.status)}
-                        <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <div className="flex items-center gap-1 text-xs text-foreground">
                           {getPaymentMethodIcon(order.payment_method)}
                           <span className="capitalize">{order.payment_method || "Card"}</span>
                         </div>
@@ -736,18 +729,18 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                     {/* Amount */}
                     <TableCell>
                       <div className="space-y-1">
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-foreground">
                           {formatPrice(order.amount, order.currency)}
                         </p>
                         {role === "admin" && (
                           <>
                             {order.tax_amount > 0 && (
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-muted-foreground">
                                 Tax: {formatPrice(order.tax_amount, order.currency)}
                               </p>
                             )}
                             {order.shipping_amount > 0 && (
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-muted-foreground">
                                 Ship: {formatPrice(order.shipping_amount, order.currency)}
                               </p>
                             )}
@@ -759,13 +752,13 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                     {/* Date */}
                     <TableCell>
                       <div className="space-y-1">
-                        <p className="text-sm text-gray-900">
+                        <p className="text-sm text-foreground">
                           {format(new Date(order.created_at), "MMM d, yyyy")}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-foreground">
                           {format(new Date(order.created_at), "h:mm a")}
                         </p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-foreground">
                           {formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}
                         </p>
                       </div>
@@ -778,7 +771,7 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                           <div className="text-xs">
                             {order.user_id ? (
                               <div className="flex items-center gap-1">
-                                <code className="bg-gray-100 px-2 py-1 rounded truncate">
+                                <code className="bg-background px-2 py-1 rounded truncate">
                                   {order.user_id.slice(0, 8)}...
                                 </code>
                                 <Button
@@ -797,7 +790,7 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
                         </TableCell>
                         <TableCell>
                           <div className="text-xs">
-                            <code className="bg-gray-100 px-2 py-1 rounded truncate block">
+                            <code className="bg-background px-2 py-1 rounded truncate block">
                               {order.stripe_payment_intent?.slice(0, 12)}...
                             </code>
                           </div>
@@ -854,17 +847,17 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
 
         {/* Summary Footer */}
         {filteredOrders.length > 0 && (
-          <div className="border-t bg-gray-50 px-6 py-4">
-            <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600">
+          <div className="border-t bg-background px-6 py-4">
+            <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-foreground">
               <div>
                 Showing <span className="font-semibold">{filteredOrders.length}</span> of{" "}
                 <span className="font-semibold">{userOrders.length}</span> orders
               </div>
               <div className="flex items-center gap-4 mt-2 sm:mt-0">
                 {role === "admin" && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center text-foreground gap-2">
                     <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                    <span>Total Revenue: {formatPrice(
+                    <span className="text-foreground">Total Revenue: {formatPrice(
                       userOrders.reduce((sum, order) => sum + order.amount, 0),
                       "USD"
                     )}</span>
@@ -890,8 +883,8 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Revenue</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm text-foreground">Total Revenue</p>
+                <p className="text-2xl font-bold text-foreground">
                   {formatPrice(
                     userOrders.reduce((sum, order) => sum + order.amount, 0),
                     "USD"
@@ -905,8 +898,8 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Avg. Order Value</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm text-foreground">Avg. Order Value</p>
+                <p className="text-2xl font-bold text-foreground">
                   {formatPrice(
                     userOrders.length > 0 
                       ? userOrders.reduce((sum, order) => sum + order.amount, 0) / userOrders.length
@@ -922,8 +915,8 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Guest Orders</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm text-foreground">Guest Orders</p>
+                <p className="text-2xl font-bold text-foreground">
                   {userOrders.filter(o => !o.user_id).length}
                 </p>
               </div>
@@ -934,8 +927,8 @@ export async function OrdersTable({ orders, role = "user", currentUserId }: Orde
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Success Rate</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm text-foreground">Success Rate</p>
+                <p className="text-2xl font-bold text-foreground">
                   {userOrders.length > 0
                     ? `${Math.round((userOrders.filter(o => o.status === 'paid').length / userOrders.length) * 100)}%`
                     : "0%"}

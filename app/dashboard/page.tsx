@@ -17,7 +17,8 @@ export default async function DashboardPage() {
     supabase.from("profiles").select("id, created_at"),
     supabase.from("products").select("id, price, stock, created_at, is_active"),
     supabase.from("orders").select("amount, status, created_at, items, customer_email"),
-    supabase.from("orders").select("*, profiles(full_name)").order("created_at", { ascending: false }).limit(5)
+    supabase.from("orders").select("*, profiles(full_name)").order("created_at", { ascending: false }).limit(5),
+ 
   ])
 
   // Extract data
@@ -25,6 +26,8 @@ export default async function DashboardPage() {
   const products = productsRes.data || []
   const checkoutSessions = checkoutSessionsRes.data || []
   const recentCheckouts = recentCheckoutsRes.data || []
+ 
+
 
   // Calculate stats
   const totalRevenue = checkoutSessions

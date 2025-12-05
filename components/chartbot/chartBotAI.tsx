@@ -22,6 +22,7 @@ import {
   Brain,
   Wand2
 } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -95,7 +96,7 @@ export function ChatBot() {
       });
 
       const data = await res.json();
-      console.log(data,"data");
+     
       
       setMessages([
         ...newMessages,
@@ -133,7 +134,7 @@ export function ChatBot() {
           url: window.location.href,
         });
       } catch (err) {
-        console.log('Error sharing:', err);
+      
       }
     }
   };
@@ -160,9 +161,11 @@ export function ChatBot() {
           <p className="text-xs text-gray-500 line-clamp-2">{product.description?.substring(0, 60)}...</p>
           <div className="flex items-center justify-between mt-2">
             <span className="font-bold text-primary">${product.price}</span>
+            <Link href={`/detail/${product.id}`} target="_blank" rel="noopener noreferrer">
             <Button size="sm" variant="ghost" className="h-7 px-2 text-xs">
               View <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -418,24 +421,14 @@ export function ChatBot() {
                         </div>
                       )}
                       
-                      {/* Feedback Buttons for Bot Messages */}
-                      {msg.role === "bot" && index === messages.length - 1 && (
-                        <div className="flex gap-2 mt-3 pt-3 border-t">
-                          <Button size="sm" variant="ghost" className="h-7 px-2 text-xs">
-                            <ThumbsUp className="h-3 w-3 mr-1" /> Helpful
-                          </Button>
-                          <Button size="sm" variant="ghost" className="h-7 px-2 text-xs">
-                            <ThumbsDown className="h-3 w-3 mr-1" /> Not Helpful
-                          </Button>
-                        </div>
-                      )}
+                     
                     </div>
                   </div>
                 ))}
                 
                 {loading && (
                   <div className="flex justify-start">
-                    <div className="bg-gray-100 rounded-2xl p-3 max-w-[80%]">
+                    <div className="bg-background rounded-2xl p-3 max-w-[80%]">
                       <div className="flex items-center gap-2">
                         <Loader2 className="h-4 w-4 animate-spin" />
                         <span className="text-sm">AI is thinking...</span>

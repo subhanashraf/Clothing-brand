@@ -4,49 +4,58 @@ import { OrdersTable } from "@/components/dashboard/orders-table"
 export default async function OrdersPage() {
   const supabase = await createClient()
 
-  // 1. Get the currently logged-in user
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
-    console.error("User not found:", userError);
-    return <div>User not authenticated</div>;
-  }
+// 1. Get logged-in user
+const { data: userData, error: userError } = await supabase.auth.getUser();
 
-  const userEmail = userData.user.email;
+if (userError || !userData?.user) {
+  console.error("User not authenticated:", userError);
+  return <div>User not authenticated</div>;
+}
 
-  // 2. Get the user profile to check role
-  const { data: profileData, error: profileError } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("email", userEmail)
-    .single();
+const userEmail = userData.user.email;
 
-  if (profileError || !profileData) {
-    console.error("Profile not found:", profileError);
-    return <div>Profile not found</div>;
-  }
 
-  const role = profileData.role;
+// 2. Get profile role
+const { data: profile, error: profileError } = await supabase
+  .from("profiles")
+  .select("role")
+  .eq("email", userEmail)
+  .single();
 
-  // 3. Fetch orders based on role
-  let { data: orders, error: ordersError }: { data: any[]; error: any } = { data: [], error: null };
 
-  if (role === "admin") {
-    orders = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .then(res => res.data || []);
-  } else {
-    orders = await supabase
-      .from("orders")
-      .select("*")
-      .eq("customer_email", userEmail)
-      .order("created_at", { ascending: false })
-      .then(res => res.data || []);
-  }
- 
+if (profileError || !profile) {
+  console.error("Profile not found:", profileError);
+  return <div>Profile not found</div>;
+}
+
+const role = profile.role;
+
+// 3. Fetch orders based on role
+let orders = [];
+
+if (role === "admin") {
+  const { data, error } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) console.error(error);
+  orders = data || [];
+} else {
+  const { data, error } = await supabase
+    .from("orders")
+    .select("*")
+    // .eq("customer_email", userEmail)
+    .order("created_at", { ascending: false });
+
   
-  if (ordersError) console.error("Error fetching orders:", ordersError);
+  if (error) console.error(error);
+  orders = data || [];
+}
+  
+
+
+  // if (ordersError) console.error("Error fetching orders:", ordersError);
 
   return (
     <div className="space-y-8">
