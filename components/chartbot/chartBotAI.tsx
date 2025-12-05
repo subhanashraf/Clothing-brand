@@ -95,7 +95,8 @@ export function ChatBot() {
       });
 
       const data = await res.json();
-
+      console.log(data,"data");
+      
       setMessages([
         ...newMessages,
         { 

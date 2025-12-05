@@ -43,6 +43,7 @@
     "@stripe/stripe-js": "latest",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
+    "@toon-format/toon": "^2.0.1",
     "@vercel/analytics": "latest",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
