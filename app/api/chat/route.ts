@@ -79,7 +79,7 @@ import { encode,encodeLines } from '@toon-format/toon'
 export async function POST(req: Request) {
   try {
     const { message } = await req.json();
-    console.log(message,"result1");
+   
     
     const supabase = await createClient();
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
@@ -103,7 +103,9 @@ export async function POST(req: Request) {
     origin_country,
     seo_title,
     seo_description,
-    seo_keywords
+    seo_keywords,
+    image_url,
+    id
   `);
     if (error) {
       console.error("SUPABASE FETCH ERROR:", error);
@@ -123,23 +125,21 @@ const finalProducts = products.map(product => {
   );
   return { ...product, discount };
 });
-    console.log(finalProducts,"result2");
-      console.log(products,"result3");
+   
       
     // Step 3: AI answer
     const prompt = `
 User question: ${message}
 
 Relevant products:
-// ${JSON.stringify(products)}
+// ${JSON.stringify(finalProducts)}
 
 Answer user question using only these products. Keep answer simple.
 `;
-    console.log(prompt,"result4");
+   
     let encodedPrompt = encode(prompt);
     const result = await chatModel.generateContent(encodedPrompt);
-    console.log(result,"result5");
-    console.log(result.response.text(),"result10");
+
    
     
     return NextResponse.json({

@@ -364,7 +364,7 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
                 {isWishlisted ? "Wishlisted" : "Wishlist"}
               </Button>
               
-              <Link href={`/product/${product.id}`}>
+              <Link href={`/detail/${product.id}`}>
                 <Button size="sm" variant="outline" className="w-full">
                   <Eye className="mr-2 h-4 w-4" />
                   View Details

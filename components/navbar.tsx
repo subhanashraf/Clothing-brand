@@ -11,6 +11,7 @@ import { useI18n } from "@/lib/i18n/context"
 import { t } from "@/lib/i18n/translations"
 import { useCart } from "@/lib/cart/context"
 import { createClient } from "@/lib/supabase/client"
+import { usePathname } from "next/navigation";
 
 export function Navbar() {
   const { theme, setTheme } = useTheme()
@@ -21,6 +22,7 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false)
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+   const pathname = usePathname();
 
   // Optimized scroll handler
   const handleScroll = useCallback(() => {
@@ -113,7 +115,12 @@ export function Navbar() {
       <div className="h-9 w-20 bg-muted rounded-xl animate-pulse"></div>
     </div>
   )
-  const textColor = isScrolled && theme === "light" ? "text-black" : "text-white";
+   const textColor =
+    pathname === "/" 
+      ? isScrolled && theme === "light" 
+        ? "text-black" 
+        : "text-white"
+      : "text-foreground";
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -168,7 +175,7 @@ export function Navbar() {
               <Button variant="ghost" size="icon" className="rounded-xl relative">
                 <ShoppingBag className="h-4 w-4" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
+                  <span className={`absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary ${textColor} text-xs flex items-center justify-center font-medium`}>
                     {itemCount > 99 ? '99+' : itemCount}
                   </span>
                 )}

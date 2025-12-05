@@ -9,6 +9,8 @@ import { I18nProvider } from "@/lib/i18n/context"
 import { CartProvider } from "@/lib/cart/context"
 import { PageLoader } from "@/components/PageLoader"
 import { ChatBot } from "@/components/chartbot/chartBotAI"
+import NProgress from "nprogress";
+NProgress.configure({ showSpinner: false, trickleSpeed: 200, minimum: 0.1 });
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const notoArabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-arabic" })
@@ -55,7 +57,9 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
-}>) {
+}>)
+
+{
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${notoArabic.variable} ${notoSC.variable} font-sans antialiased`}>
