@@ -63,6 +63,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${notoArabic.variable} ${notoSC.variable} font-sans antialiased`}>
+          
+       
+        <div 
+          className="
+           
+            bg-red-600 text-white text-center 
+             text-sm font-semibold z-[9999]
+          "
+        >
+          THIS IS ONLY A **DEMO WEBSITE**. CHANGE TEXT AND IMAGE, EVERYTHING IS CHANGE YOUR REQUIREMENT.
+        </div>
+     
+        <div className="pt-10"> 
+      
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <I18nProvider>
             <CartProvider>
@@ -75,6 +89,7 @@ export default function RootLayout({
           </I18nProvider>
         </ThemeProvider>
         <Analytics />
+             </div>
       </body>
     </html>
   )
