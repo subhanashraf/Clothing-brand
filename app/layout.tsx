@@ -75,7 +75,7 @@ export default function RootLayout({
           THIS IS ONLY A **DEMO WEBSITE**. CHANGE TEXT AND IMAGE, EVERYTHING IS CHANGE YOUR REQUIREMENT.
         </div>
      
-        <div className="pt-10"> 
+       
       
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <I18nProvider>
@@ -89,7 +89,7 @@ export default function RootLayout({
           </I18nProvider>
         </ThemeProvider>
         <Analytics />
-             </div>
+          
       </body>
     </html>
   )
