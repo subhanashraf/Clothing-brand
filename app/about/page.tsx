@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { AboutContent } from "@/components/about-content"
+import { AboutPages } from "@/components/about-content"
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -16,7 +16,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <AboutContent />
+      <AboutPages />
       <Footer />
     </main>
   )
