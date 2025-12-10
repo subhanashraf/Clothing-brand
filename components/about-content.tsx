@@ -1,245 +1,307 @@
 "use client"
 
-import { useState } from "react"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Mail, MapPin, Phone, Globe, Loader2, CheckCircle } from "lucide-react"
-import { toast } from "sonner"
 import { useI18n } from "@/lib/i18n/context"
-import { t } from "@/lib/i18n/contact"
+import { t } from "@/lib/i18n/about"
+import { CheckCircle, Globe, Shield, Users, Target, Heart, Zap, Users as Community } from "lucide-react"
 
-export function ContactContent() {
+export function AboutPages() {
   const { locale } = useI18n()
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" })
 
-  const contactInfo = [
-    { icon: Mail, label: "contact.email.label", value: "contact.email.value", href: "mailto:hello@premiumsaas.com" },
-    { icon: Phone, label: "contact.phone.label", value: "contact.phone.value", href: "tel:+15551234567" },
-    { icon: MapPin, label: "contact.office.label", value: "contact.office.value", href: "#" },
-    { icon: Globe, label: "contact.support.label", value: "contact.support.value", href: "#" },
+  const features = [
+    {
+      icon: CheckCircle,
+      titleKey: "features.quality.title",
+      descriptionKey: "features.quality.description",
+    },
+    {
+      icon: Globe,
+      titleKey: "features.shipping.title",
+      descriptionKey: "features.shipping.description",
+    },
+    {
+      icon: Shield,
+      titleKey: "features.assurance.title",
+      descriptionKey: "features.assurance.description",
+    },
+    {
+      icon: Users,
+      titleKey: "features.support.title",
+      descriptionKey: "features.support.description",
+    },
   ]
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsLoading(false)
-    setIsSubmitted(true)
-    toast.success(t("form.success", locale))
-  }
+  const values = [
+    {
+      icon: Target,
+      titleKey: "values.mission.title",
+      descriptionKey: "values.mission.description",
+      color: "text-blue-600",
+      bgColor: "bg-blue-50"
+    },
+    {
+      icon: Heart,
+      titleKey: "values.customer.title",
+      descriptionKey: "values.customer.description",
+      color: "text-red-600",
+      bgColor: "bg-red-50"
+    },
+    {
+      icon: Zap,
+      titleKey: "values.innovation.title",
+      descriptionKey: "values.innovation.description",
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-50"
+    },
+    {
+      icon: Community,
+      titleKey: "values.community.title",
+      descriptionKey: "values.community.description",
+      color: "text-green-600",
+      bgColor: "bg-green-50"
+    },
+  ]
+
+  const stats = [
+    {
+      valueKey: "stats.users.value",
+      labelKey: "stats.users.label",
+    },
+    {
+      valueKey: "stats.transactions.value",
+      labelKey: "stats.transactions.label",
+    },
+    {
+      valueKey: "stats.uptime.value",
+      labelKey: "stats.uptime.label",
+    },
+    {
+      valueKey: "stats.support.value",
+      labelKey: "stats.support.label",
+    },
+  ]
+
+  const journeySections = [
+    {
+      titleKey: "story.paragraph1",
+    },
+    {
+      titleKey: "story.paragraph2",
+    },
+    {
+      titleKey: "story.paragraph3",
+    },
+  ]
 
   return (
-    <div className="pt-16">
-      {/* Map Section */}
-      <section className="py-12 sm:py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="glass-ultra rounded-2xl overflow-hidden"
-          >
-            <div className="p-6 sm:p-8 border-b border-border/50">
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                {t("map.title", locale)}
-              </h2>
-              <p className="text-muted-foreground">
-                {t("map.subtitle", locale)}
-              </p>
-            </div>
-            
-            <div className="relative h-80 sm:h-96">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110271.68878779262!2d-122.52000083990781!3d37.75780703726593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan+Francisco,+CA,+USA!5e1!3m2!1sen!2s!4v1764951541778!5m2!1sen!2s" 
-                className="w-full h-full border-0"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              
-              <div className="absolute bottom-4 right-4 glass p-4 rounded-xl backdrop-blur-sm max-w-xs">
-                <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  <span className="font-medium text-foreground">
-                    {t("map.location", locale)}
+    <div className="min-h-screen bg-background">
+      {/* Journey Section - At the top */}
+      <section className="relative py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="bg-gradient-to-br from-primary/5 to-secondary/5 border border-border rounded-2xl p-8 lg:p-12 mb-16"
+            >
+              <div className="flex flex-col lg:flex-row items-start gap-8">
+                <div className="lg:w-1/3">
+                  <span className="inline-flex items-center rounded-full px-4 py-1.5 text-xs font-medium bg-primary/10 text-primary mb-4">
+                    {t("story.title", locale)}
                   </span>
+                  <h2 className="text-3xl font-bold text-foreground mb-4">
+                    {t("hero.title", locale)}
+                  </h2>
+                  <div className="h-1 w-16 bg-primary rounded-full mb-6"></div>
                 </div>
-                <p className="text-foreground font-medium">San Francisco, CA</p>
+                
+                <div className="lg:w-2/3 space-y-6">
+                  {journeySections.map((section, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      </div>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {t(section.titleKey, locale)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
-            {/* Contact Info */}
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-foreground mb-6">
-                {t("contact.title", locale)}
-              </h2>
-              <div className="space-y-4">
-                {contactInfo.map((item, index) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center gap-4 p-4 glass rounded-xl hover:shadow-lg transition-all"
-                  >
-                    <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <item.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">
-                        {t(item.label, locale)}
-                      </p>
-                      <p className="font-medium text-foreground">
-                        {t(item.value, locale)}
-                      </p>
-                    </div>
-                  </a>
-                ))}
-              </div>
-              
-              <div className="glass p-6 rounded-xl">
-                <h3 className="font-semibold text-foreground mb-3">
-                  {t("support.hours.title", locale)}
-                </h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {t("support.hours.weekdays", locale)}
-                    </span>
-                    <span className="font-medium text-foreground">
-                      {t("support.hours.weekdaysTime", locale)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {t("support.hours.weekend", locale)}
-                    </span>
-                    <span className="font-medium text-primary">
-                      {t("support.hours.weekendTime", locale)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Form */}
-            <div className="lg:col-span-2">
-              <div className="glass-ultra rounded-2xl overflow-hidden">
-                <div className="p-6 sm:p-8 border-b border-border/50">
-                  <h2 className="text-2xl font-bold text-foreground mb-2">
-                    {t("form.title", locale)}
-                  </h2>
-                  <p className="text-muted-foreground">
-                    {t("form.subtitle", locale)}
+      {/* Main About Content */}
+      <section className="py-16 lg:py-24 bg-muted/20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-xs font-medium bg-primary/10 text-primary mb-4">
+                  {t("about.badge", locale)}
+                </span>
+                <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
+                  {t("about.title", locale)}
+                </h1>
+                <div className="space-y-4">
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    {t("about.description1", locale)}
+                  </p>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    {t("about.description2", locale)}
                   </p>
                 </div>
-                
-                <div className="p-6 sm:p-8">
-                  {isSubmitted ? (
-                    <div className="text-center py-12">
-                      <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-chart-4/10 flex items-center justify-center">
-                        <CheckCircle className="h-10 w-10 text-chart-4" />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="bg-card border rounded-xl p-8"
+              >
+                <h3 className="text-2xl font-bold text-foreground mb-6">
+                  {t("values.title", locale)}
+                </h3>
+                <div className="space-y-6">
+                  {values.map((value, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className={`flex-shrink-0 w-12 h-12 ${value.bgColor} rounded-lg flex items-center justify-center`}>
+                        <value.icon className={`w-6 h-6 ${value.color}`} />
                       </div>
-                      <h3 className="text-2xl font-semibold text-foreground mb-3">
-                        {t("form.successTitle", locale)}
-                      </h3>
-                      <p className="text-muted-foreground mb-8">
-                        {t("form.successMessage", locale)}
-                      </p>
-                      <Button 
-                        onClick={() => setIsSubmitted(false)}
-                        className="rounded-full px-8 py-6 font-medium bg-primary"
-                      >
-                        {t("form.sendAnother", locale)}
-                      </Button>
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-2">
+                          {t(value.titleKey, locale)}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {t(value.descriptionKey, locale)}
+                        </p>
+                      </div>
                     </div>
-                  ) : (
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid sm:grid-cols-2 gap-6">
-                        <div className="grid gap-2">
-                          <Label htmlFor="name" className="font-medium">
-                            {t("form.name", locale)}
-                          </Label>
-                          <Input
-                            id="name"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            placeholder={t("form.namePlaceholder", locale)}
-                            className="rounded-lg py-6"
-                            required
-                          />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label htmlFor="email" className="font-medium">
-                            {t("form.email", locale)}
-                          </Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            placeholder={t("form.emailPlaceholder", locale)}
-                            className="rounded-lg py-6"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="subject" className="font-medium">
-                          {t("form.subject", locale)}
-                        </Label>
-                        <Input
-                          id="subject"
-                          value={formData.subject}
-                          onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                          placeholder={t("form.subjectPlaceholder", locale)}
-                          className="rounded-lg py-6"
-                          required
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="message" className="font-medium">
-                          {t("form.message", locale)}
-                        </Label>
-                        <Textarea
-                          id="message"
-                          value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          placeholder={t("form.messagePlaceholder", locale)}
-                          rows={6}
-                          className="rounded-lg"
-                          required
-                        />
-                      </div>
-                      <Button 
-                        type="submit" 
-                        className="w-full rounded-full py-6 font-medium bg-primary"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                            {t("form.sending", locale)}
-                          </>
-                        ) : (
-                          t("form.submit", locale)
-                        )}
-                      </Button>
-                    </form>
-                  )}
+                  ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl font-bold text-foreground mb-4">
+                {t("features.quality.title", locale)} & {t("features.assurance.title", locale)}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t("values.subtitle", locale)}
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-card border rounded-xl p-6 hover:shadow-lg transition-shadow"
+                >
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    <feature.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">
+                    {t(feature.titleKey, locale)}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {t(feature.descriptionKey, locale)}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 lg:py-24 bg-muted/20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl font-bold text-foreground mb-4">
+                Our Impact in Numbers
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Measurable results that speak for themselves
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {t(stat.valueKey, locale)}
+                  </div>
+                  <div className="text-sm text-muted-foreground font-medium">
+                    {t(stat.labelKey, locale)}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-border rounded-2xl p-8 lg:p-12 text-center"
+            >
+              <h2 className="text-3xl font-bold text-foreground mb-6">
+                Ready to Experience Excellence?
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Join thousands of satisfied customers who trust us for premium clothing exports.
+              </p>
+              <button className="inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90">
+                Get Started Today
+              </button>
+            </motion.div>
           </div>
         </div>
       </section>
